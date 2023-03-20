@@ -6,23 +6,23 @@
         <input
           id="email"
           type="text"
-          v-model="email_register"
+          v-model="email"
           :class="{
             invalid:
-              (v$.email_register.$dirty && !v$.email_register.required) ||
-              (v$.email_register.$dirty && v$.email_register.email),
+              (v$.email.$dirty && !v$.email.required) ||
+              (v$.email.$dirty && v$.email.email),
           }"
         />
         <label for="email">Email</label>
         <small
           class="helper-text invalid"
-          v-if="v$.email_register.$dirty && !v$.email_register.required"
+          v-if="v$.email.$dirty && !v$.email.required"
         >
           Введите Email
         </small>
         <small
           class="helper-text invalid"
-          v-else-if="v$.email_register.$dirty && v$.email_register.email"
+          v-else-if="v$.email.$dirty && v$.email.email"
         >
           Email некорректный
         </small>
@@ -31,26 +31,26 @@
         <input
           id="password"
           type="password"
-          v-model="password_register"
+          v-model="password"
           :class="{
             invalid:
-              (v$.password_register.$dirty && !v$.password_register.required) ||
-              (v$.password_register.$dirty && v$.password_register.minLength),
+              (v$.password.$dirty && !v$.password.required) ||
+              (v$.password.$dirty && v$.password.minLength),
           }"
         />
         <label for="password">Пароль</label>
         <small
           class="helper-text invalid"
-          v-if="v$.password_register.$dirty && !v$.password_register.required"
+          v-if="v$.password.$dirty && !v$.password.required"
         >
           Введите пароль
         </small>
         <small
           class="helper-text invalid"
-          v-else-if="v$.password_register.$dirty && v$.password_register.minLength"
+          v-else-if="v$.password.$dirty && v$.password.minLength"
         >
           Пароль должен быть не меньше
-          {{ v$.password_register.minLength.$params.min }} символов
+          {{ v$.password.minLength.$params.min }} символов
         </small>
       </div>
       <div class="input-field">
@@ -79,15 +79,21 @@
           {{ v$.name.minLength.$params.min }} символов
         </small>
       </div>
-      <p>
+      <div class="checkbox-field">
         <label>
           <input
             type="checkbox"
-            :class="{ invalid: v$.checkbox.$dirty && !v$.checkbox.sameAs }"
+            :class="{ invalid: v$.agree.$dirty && v$.agree.sameAs }"
           />
           <span>С правилами согласен</span>
         </label>
-      </p>
+        <small
+          class="helper-text invalid"
+          v-if="v$.agree.$dirty && v$.agree.sameAs"
+        >
+          Нажми чекбокс
+        </small>
+      </div>
     </div>
     <div class="card-action">
       <div>
@@ -112,7 +118,7 @@ import { required, minLength, email, sameAs } from "@vuelidate/validators";
 export default {
   name: "v-register",
   setup() {
-    return { v$: useVuelidate() }
+    return { v$: useVuelidate() };
   },
   data() {
     return {
@@ -123,15 +129,15 @@ export default {
     };
   },
   validations: () => ({
-      email_register: { required, email },
-      password_register: { required, minLength: minLength(6) },
+      email: { required, email },
+      password: { required, minLength: minLength(6) },
       name: { required, minLength: minLength(2) },
-      checkbox: { sameAs: sameAs(() => true) },
+      agree: { sameAs: sameAs(() => true) },
   }),
   methods: {
     submitHandler() {
-      if (this.v$.$error) {
-        this.v$.touch();
+      if (this.v$.$invalid) {
+        this.v$.$touch();
         return;
       }
       this.$router.push("/");
@@ -139,3 +145,11 @@ export default {
   },
 };
 </script>
+
+
+<style>
+.checkbox-field {
+  display: flex;
+  flex-direction: column;
+}
+</style>

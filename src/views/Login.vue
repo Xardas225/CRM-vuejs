@@ -91,12 +91,15 @@ export default {
   }),
   methods: {
     submitHandler() {
-      if (this.v$.$error) {
+      if (this.v$.$invalid) {
         this.v$.$touch();
         return;
       }
       this.$router.push("/");
     },
+  },
+  onMounted() {
+    this.v$.$reset();
   },
 };
 </script>
