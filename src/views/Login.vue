@@ -73,6 +73,7 @@
 <script>
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength } from "@vuelidate/validators";
+import messages from '@/utils/messages';
 
 export default {
   name: "v-login",
@@ -98,8 +99,10 @@ export default {
       this.$router.push("/");
     },
   },
-  onMounted() {
-    this.v$.$reset();
+  mounted() {
+    if(this.$route.query.message) {
+      this.$message(messages[this.$route.query.message]);
+    }
   },
 };
 </script>
