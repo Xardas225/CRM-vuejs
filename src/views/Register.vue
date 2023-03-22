@@ -143,7 +143,7 @@ export default {
 
       let formData = {
         email: this.email,
-        password: this.password, 
+        password: this.password,
         name: this.name
       }
 
