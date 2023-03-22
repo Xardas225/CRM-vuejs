@@ -91,12 +91,24 @@ export default {
     password: { required, minLength: minLength(6) },
   }),
   methods: {
-    submitHandler() {
+    async submitHandler() {
       if (this.v$.$invalid) {
         this.v$.$touch();
         return;
       }
-      this.$router.push("/");
+
+      let formData = {
+        email: this.email,
+        password: this.password
+      }
+
+      try {
+        await this.$store.dispatch('login', formData);
+        this.$router.push("/");
+      } catch (e) {
+        console.log(e);
+      }
+
     },
   },
   mounted() {
