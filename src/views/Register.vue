@@ -83,13 +83,13 @@
         <label>
           <input
             type="checkbox"
-            :class="{ invalid: v$.agree.$dirty && v$.agree.sameAs }"
+            :class="{ invalid: v$.agree.$dirty && v$.agree.checked }"
           />
           <span>С правилами согласен</span>
         </label>
         <small
           class="helper-text invalid"
-          v-if="v$.agree.$dirty && v$.agree.sameAs"
+          v-if="v$.agree.$dirty && v$.agree.checked"
         >
           Нажми чекбокс
         </small>
@@ -113,7 +113,7 @@
 
 <script>
 import useVuelidate from "@vuelidate/core";
-import { required, minLength, email, sameAs } from "@vuelidate/validators";
+import { required, minLength, email} from "@vuelidate/validators";
 
 export default {
   name: "v-register",
@@ -125,22 +125,35 @@ export default {
       email: "",
       password: "",
       name: "",
-      checkbox: false,
+      agree: true,
     };
   },
   validations: () => ({
       email: { required, email },
       password: { required, minLength: minLength(6) },
       name: { required, minLength: minLength(2) },
-      agree: { sameAs: sameAs(() => true) },
+      agree: { checked: v => v }
   }),
   methods: {
-    submitHandler() {
+    async submitHandler() {
       if (this.v$.$invalid) {
         this.v$.$touch();
         return;
       }
-      this.$router.push("/");
+
+      let formData = {
+        email: this.email,
+        password: this.password, 
+        name: this.name
+      }
+
+      try {
+        this.$store.dispatch('register', formData);
+        this.$router.push("/");
+      } catch(e) {
+        console.log(e);
+      }
+
     },
   },
 };

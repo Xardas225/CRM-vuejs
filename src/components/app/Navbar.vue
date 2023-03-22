@@ -23,14 +23,18 @@
           <ul id="dropdown" class="dropdown-content">
             <li>
               <router-link to="/profile" class="black-text">
-                  <i class="material-icons">account_circle</i>Профиль
+                <i class="material-icons">account_circle</i>Профиль
               </router-link>
             </li>
             <li class="divider" tabindex="-1"></li>
             <li>
-                <router-link @click.prevent="logout" class="black-text" to="/logout">
-                    <i class="material-icons">assignment_return</i>Выйти
-                </router-link>
+              <router-link
+                @click.prevent="logout"
+                class="black-text"
+                to="/logout"
+              >
+                <i class="material-icons">assignment_return</i>Выйти
+              </router-link>
             </li>
           </ul>
         </li>
@@ -40,33 +44,35 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue';
+import { getCurrentInstance } from "vue";
 
 export default {
   name: "v-navbar",
   data() {
     return {
-        date: new Date()
-    }
+      date: new Date(),
+    };
   },
   methods: {
-    logout() {
-        this.$router.push('/login?message=logout');
-    }
+    async logout() {
+      await this.$store.dispatch('logout');
+      this.$router.push("/login?message=logout");
+    },
   },
   mounted() {
     this.dropdown = window.M.Dropdown.init(this.$refs.dropdown, {});
     const internalInstance = getCurrentInstance();
-    this.timer = setInterval(()=>
-    {
-      this.date = internalInstance.appContext.config.globalProperties.$moment(this.$refs.date.innerHtml).format('HH:MM DD.MM.YYYY');
-    },1000)
+    this.timer = setInterval(() => {
+      this.date = internalInstance.appContext.config.globalProperties
+        .$moment(this.$refs.date.innerHtml)
+        .format("HH:MM DD.MM.YYYY");
+    }, 1000);
   },
   beforeUnmount() {
     clearInterval(this.timer);
-    if(this.dropdown && this.dropdown.destroy) {
-      this.dropdown.destroy() 
+    if (this.dropdown && this.dropdown.destroy) {
+      this.dropdown.destroy();
     }
-  }
+  },
 };
 </script>
