@@ -16,7 +16,7 @@
             data-target="dropdown"
             ref="dropdown"
           >
-            USER NAME
+            {{ name }}
             <i class="material-icons right">arrow_drop_down</i>
           </a>
 
@@ -50,8 +50,13 @@ export default {
   name: "v-navbar",
   data() {
     return {
-      date: new Date(),
+      date: new Date()
     };
+  },
+  computed: {
+    name() {
+      return this.$store.getters.info.name;
+    }
   },
   methods: {
     async logout() {
