@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="app-main-layout">
+    <Loader v-if="loading"></Loader>
+    <div v-else class="app-main-layout">
       
       <Navbar @click="isOpen = !isOpen"></Navbar>
 
@@ -33,15 +34,17 @@ export default {
   },
   data() {
     return {
-      isOpen: false
+      isOpen: false,
+      loading: true
     }
   },
   computed: {
     ...mapGetters(['info'])
   },
-  mounted() {
-    if(!Object.keys(this.info))
-      this.$store.dispatch('fetchInfo');
+  async mounted() {
+    await this.$store.dispatch('fetchInfo');
+
+    this.loading = false;
   }
 }
 </script>

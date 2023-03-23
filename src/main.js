@@ -6,8 +6,9 @@ import store from "./store";
 import moment from "moment";
 import useVuelidate from "@vuelidate/core";
 import messagePlugin from "./utils/message.plugin";
-import "materialize-css/dist/js/materialize";
+import Loader from '@/components/app/Loader';
 import firebase from 'firebase/app';
+import "materialize-css/dist/js/materialize";
 import "firebase/auth";
 import "firebase/database";
 
@@ -29,6 +30,7 @@ firebase.auth().onAuthStateChanged(()=> {
     if(!app) {
         app =  createApp(App);
         app.config.globalProperties.$moment = moment;
+        app.component('v-loader', Loader);
         app.use(messagePlugin).use(useVuelidate).use(store).use(router).mount("#app");
     }
 })
