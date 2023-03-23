@@ -24,6 +24,7 @@
 <script>
 import Sidebar from '@/components/app/Sidebar.vue';
 import Navbar from '@/components/app/Navbar.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'main-layout',
@@ -34,6 +35,13 @@ export default {
     return {
       isOpen: false
     }
+  },
+  computed: {
+    ...mapGetters(['info'])
+  },
+  mounted() {
+    if(!Object.keys(this.info))
+      this.$store.dispatch('fetchInfo');
   }
 }
 </script>
