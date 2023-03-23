@@ -2,7 +2,7 @@
   <nav class="navbar orange lighten-1">
     <div class="nav-wrapper">
       <div class="navbar-left">
-        <a href="#" @click.prevent="$emit('toggleSidebar')">
+        <a href="#" @click.stop="$emit('toggleSidebar')">
           <i class="material-icons black-text">dehaze</i>
         </a>
         <span class="black-text" ref="date">{{ date }}</span>
