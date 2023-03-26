@@ -1,15 +1,16 @@
-import { createStore } from 'vuex'
-import auth from './auth';
-import info from './info';
+import { createStore } from "vuex";
+import auth from "./auth";
+import info from "./info";
+import categories from "./categories";
 
 export default createStore({
   state: {
-    error: null
+    error: null,
   },
   getters: {
     getError(state) {
       return state.error;
-    }
+    },
   },
   mutations: {
     setError(state, error) {
@@ -17,20 +18,25 @@ export default createStore({
     },
     clearError(state) {
       state.error = null;
-    }
+    },
   },
   actions: {
     async fetchCurrency() {
       // const key = process.env.VUE_APP_FIXER;
-      const res = await fetch(`https://api.apilayer.com/fixer/latest?base=USD&symbols=EUR,USD,RUB`, {
-        headers: {
-          // apikey: key
+      const res = await fetch(
+        `https://api.apilayer.com/fixer/latest?base=USD&symbols=EUR,USD,RUB`,
+        {
+          headers: {
+            // apikey: key
+          },
         }
-      })
+      );
       return await res.json();
-    }
+    },
   },
   modules: {
-    auth, info
-  }
-})
+    auth,
+    info,
+    categories,
+  },
+});

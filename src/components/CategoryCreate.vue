@@ -5,7 +5,7 @@
         <h4>Создать</h4>
       </div>
 
-      <form @click.prevent="submitHandler">
+      <form @submit.prevent="submitHandler">
         <div class="input-field">
           <input
             id="name"
@@ -26,7 +26,7 @@
           <input
             id="limit"
             type="number"
-            v-model="limit"
+            v-model.number="limit"
             :class="{ invalid: v$.limit.$dirty && !v$.limit.minValue }"
           />
           <label for="limit">Лимит</label>
@@ -34,7 +34,7 @@
             class="helper-text invalid"
             v-if="v$.limit.$dirty && !v$.limit.minValue"
           >
-            Минимальная величина
+            Минимальная величина {{ v$.limit.$params.minValue.min }}
           </span>
         </div>
 
@@ -66,13 +66,32 @@ export default {
     title: { required },
     limit: { required, minValue: minValue(1) },
   }),
+  mounted() {
+    window.M.updateTextFields();
+  },
   methods: {
-    submitHandler() {
-        if(this.v$.$invalid) {
-            this.v$.$touch();
-            return;
-        }
-    }
-  }
+    async submitHandler() {
+      if (this.v$.$invalid) {
+        this.v$.$touch();
+        return;
+      }
+
+      let formData = {
+        title: this.title,
+        limit: this.limit,
+      };
+
+      try {
+        const category = await this.$store.dispatch("createCategory", formData);
+        this.title = "";
+        this.limit = 1;
+        this.v$.$reset();
+        this.$message("Категория была создана");
+        this.$emit("created", category);
+      } catch (error) {
+        this.$error("Ошибка при создании категории");
+      }
+    },
+  },
 };
 </script>
