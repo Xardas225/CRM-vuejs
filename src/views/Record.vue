@@ -1,12 +1,18 @@
 <template>
-  <div>
+  <v-loader v-if="loading"></v-loader>
+
+  <p v-else-if="!categories.length">
+    <router-link to="/categories"></router-link>
+  </p>
+
+  <div v-else>
     <div class="page-title">
       <h3>Новая запись</h3>
     </div>
 
-    <form class="form">
+    <form class="form" @submit.prevent="submitHandler">
       <div class="input-field">
-        <select>
+        <select ref="select">
           <option>name cat</option>
         </select>
         <label>Выберите категорию</label>
@@ -47,7 +53,35 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core';
+
 export default {
-    name: 'v-record'
+    name: 'v-record',
+    data() {
+      return {
+        categories: [],
+        loading: true,
+        select: null
+      }
+    },
+    setup() {
+      return{v$: useVuelidate()}
+    },
+    validations: () => ({
+
+    }),
+    methods: {
+      submitHandler() {
+        if(this.v$.$invalid) {
+          this.v$.$touch();
+          return;
+        }
+      }
+    },
+    async mounted() {
+      this.categories = await this.$store.dispatch('fetchCategories');
+      this.select = window.M.FormSelect.init(this.$refs.select);
+      this.loading = false;
+    }
 }
 </script>
