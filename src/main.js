@@ -1,6 +1,5 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import moment from "moment";
@@ -8,6 +7,7 @@ import useVuelidate from "@vuelidate/core";
 import messagePlugin from "./utils/message.plugin";
 import Loader from '@/components/app/Loader';
 import firebase from 'firebase/app';
+import tooltipDirective from "./directives/tooltip.directive";
 import "materialize-css/dist/js/materialize";
 import "firebase/auth";
 import "firebase/database";
@@ -31,6 +31,7 @@ firebase.auth().onAuthStateChanged(()=> {
         app =  createApp(App);
         app.config.globalProperties.$moment = moment;
         app.component('v-loader', Loader);
+        app.directive('tooltip', tooltipDirective);
         app.use(messagePlugin).use(useVuelidate).use(store).use(router).mount("#app");
     }
 })
