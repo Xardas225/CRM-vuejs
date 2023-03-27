@@ -1,8 +1,9 @@
 <template>
   <v-loader v-if="loading"></v-loader>
 
-  <p v-else-if="!categories.length" class="center ">
-    Пока что категорий нет, но вы можете <router-link to="/categories">Добавить новую категорию</router-link>
+  <p v-else-if="!categories.length" class="center">
+    Пока что категорий нет, но вы можете
+    <router-link to="/categories">Добавить новую категорию</router-link>
   </p>
 
   <div v-else>
@@ -112,7 +113,7 @@ export default {
       amount: 1,
       description: "",
       type: "income",
-      category: null
+      category: null,
     };
   },
   validations: () => ({
@@ -152,10 +153,10 @@ export default {
             : this.info.bill - this.amount;
 
         this.$store.dispatch("updateInfo", { bill });
-        this.$message('Запись успешно создана');
+        this.$message("Запись успешно создана");
         this.v$.$reset();
         this.amount = 1;
-        this.description = '';
+        this.description = "";
       } catch (error) {
         this.$error("На счете недостаточно средств");
       }
@@ -169,12 +170,10 @@ export default {
       window.M.updateTextFields();
     }, 0);
 
-    if(this.categories.length) {
+    if (this.categories.length) {
       this.category = this.categories[0].id;
     }
   },
-  created() {
-    
-  }
+  created() {},
 };
 </script>
