@@ -1,8 +1,8 @@
 <template>
   <v-loader v-if="loading"></v-loader>
 
-  <p v-else-if="!categories.length">
-    <router-link to="/categories"></router-link>
+  <p v-else-if="!categories.length" class="center ">
+    Пока что категорий нет, но вы можете <router-link to="/categories">Добавить новую категорию</router-link>
   </p>
 
   <div v-else>
