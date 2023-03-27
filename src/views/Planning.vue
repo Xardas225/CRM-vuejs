@@ -73,8 +73,6 @@ export default {
       };
     });
 
-    console.log(this.categories);
-
     this.loading = false;
   },
 };
