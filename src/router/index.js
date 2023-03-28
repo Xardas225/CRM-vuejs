@@ -27,7 +27,7 @@ const routes = [
     component: () => import('@/views/Categories.vue')
   },
   {
-    path: '/detail-record',
+    path: '/detail/:id',
     name: 'detailRecord',
     meta: {layout: 'main', auth: true},
     component: () => import('@/views/DetailRecord.vue')
