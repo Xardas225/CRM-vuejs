@@ -8,6 +8,7 @@ import messagePlugin from "./utils/message.plugin";
 import Loader from '@/components/app/Loader';
 import firebase from 'firebase/app';
 import tooltipDirective from "./directives/tooltip.directive";
+import pagination from '@/mixins/pagination.mixin';
 import "materialize-css/dist/js/materialize";
 import "firebase/auth";
 import "firebase/database";
@@ -31,6 +32,7 @@ firebase.auth().onAuthStateChanged(()=> {
         app =  createApp(App);
         app.config.globalProperties.$moment = moment;
         app.component('v-loader', Loader);
+        app.component('v-pagination', pagination);
         app.directive('tooltip', tooltipDirective);
         app.use(messagePlugin).use(useVuelidate).use(store).use(router).mount("#app");
     }
