@@ -27,20 +27,15 @@
       <HistoryTable :records="items"></HistoryTable>
     </section>
 
-    <v-pagination
-      :page-count="5"
-      :click-handler="handlePaginate"
-      :prev-text="'Назад'"
-      :prev-next="'Вперёд'"
-      :container-class="'pagination'"
-      :page-class="'waves-effect'"
-      v-model="page"
-      :pages="10"
-      :range-size="1"
-      active-color="#DCEDFF"
-      @update:modelValue="updateHandler"
-    >
-    </v-pagination>
+    <div class="pagination-wrap">
+      <v-pagination
+        v-model="page"
+        :pages="pageCount"
+        :range-size="pageSize"
+        @update:modelValue="changePaginate"
+      >
+      </v-pagination>
+    </div>
   </div>
 </template>
 
@@ -67,6 +62,7 @@ ChartJS.register(
 );
 
 import VPagination from "@hennge/vue3-pagination";
+import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 import paginationMixin from "@/mixins/pagination.mixin";
 import HistoryTable from "@/components/HistoryTable.vue";
 
@@ -144,7 +140,6 @@ export default {
     this.loading = false;
   },
   methods: {
-    handlePaginate() {},
     async setup() {
       this.records = await this.$store.dispatch("fetchRecords");
       this.setupPagination(
@@ -175,5 +170,11 @@ export default {
 .history-chart__title {
   text-align: center;
   margin: 20px auto;
+}
+.pagination-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  align-items: center;
 }
 </style>
