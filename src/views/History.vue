@@ -5,7 +5,22 @@
     </div>
 
     <div class="history-chart">
-      <Pie id="my-chart-id" :options="chartOptions" :data="chartData" />
+      <div class="history-chart__elem">
+        <h5 class="history-chart__title">График расходов по категориям</h5>
+        <Pie
+          id="my-chart-id"
+          :options="chartOutcomeOptions"
+          :data="chartOutcomeData"
+        />
+      </div>
+      <div class="history-chart__elem">
+        <h5 class="history-chart__title">График доходов по категориям</h5>
+        <Pie
+          id="my-chart-id"
+          :options="chartIncomeOptions"
+          :data="chartIncomeData"
+        />
+      </div>
     </div>
 
     <section>
@@ -71,25 +86,54 @@ export default {
     };
   },
   computed: {
-    chartData() {
+    chartOutcomeData() {
       let labels = this.categories.map((c) => c.title);
       let datasets = [
         {
-          label: 'Расходы по категории',
-          data: this.categories.map(c=>{
-            return this.records.reduce((total, r)=>{
-              if(r.categoryId === c.id && r.type === 'outcome') {
+          label: "Расходы по категории",
+          data: this.categories.map((c) => {
+            return this.records.reduce((total, r) => {
+              if (r.categoryId === c.id && r.type === "outcome") {
                 total += r.amount;
               }
               return total;
-            },0)
+            }, 0);
           }),
-          backgroundColor: this.categories.map(()=> ('#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)))
+          backgroundColor: this.categories.map(
+            () =>
+              "#" +
+              (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)
+          ),
         },
       ];
       return { labels, datasets };
     },
-    chartOptions() {
+    chartIncomeData() {
+      let labels = this.categories.map((c) => c.title);
+      let datasets = [
+        {
+          label: "Доходы по категории",
+          data: this.categories.map((c) => {
+            return this.records.reduce((total, r) => {
+              if (r.categoryId === c.id && r.type === "income") {
+                total += r.amount;
+              }
+              return total;
+            }, 0);
+          }),
+          backgroundColor: this.categories.map(
+            () =>
+              "#" +
+              (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6)
+          ),
+        },
+      ];
+      return { labels, datasets };
+    },
+    chartIncomeOptions() {
+      return { responsive: true };
+    },
+    chartOutcomeOptions() {
       return { responsive: true };
     },
   },
@@ -119,3 +163,17 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.history-chart {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  max-width: 100%;
+  margin-bottom: 30px;
+}
+.history-chart__title {
+  text-align: center;
+  margin: 20px auto;
+}
+</style>
